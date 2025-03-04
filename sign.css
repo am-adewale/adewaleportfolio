@@ -1,0 +1,138 @@
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  /* Navbar */
+  nav {
+    background: #333;
+    padding: 1rem 0;
+  }
+  
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+  }
+  
+  nav .logo a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  nav .nav-links {
+    list-style: none;
+  }
+  
+  nav .nav-links li {
+    display: inline;
+    margin-left: 2rem;
+  }
+  
+  nav .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
+  
+  nav .btn {
+    background-color: #4CAF50;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    color: #fff;
+  }
+  
+  nav .btn:hover {
+    background-color: #45a049;
+  }
+  
+  /* Sign Up / Login Section */
+  .signup-section, .login-section {
+    padding: 5rem 0;
+    text-align: center;
+    color: #333;
+  }
+  
+  .signup-section h2, .login-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .signup-section form, .login-section form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signup-section form input, .login-section form input {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .signup-section form button, .login-section form button {
+    width: 100%;
+    padding: 1rem;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .signup-section form button:hover, .login-section form button:hover {
+    background-color: #45a049;
+  }
+  
+  .signup-section p, .login-section p {
+    margin-top: 1rem;
+  }
+  
+  .signup-section a, .login-section a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  
+  .signup-section a:hover, .login-section a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    nav .nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    nav .nav-links li {
+      margin: 1rem 0;
+    }
+  
+    .signup-section form, .login-section form {
+      width: 90%;
+      padding: 1.5rem;
+    }
+  
+    .signup-section h2, .login-section h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
