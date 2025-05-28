@@ -1,3 +1,39 @@
+// Project data array
+const projects = [
+  {
+    id: 1,
+    title: "Movies review website",
+    description: "A full-featured movies review platform which feautures live movie data, instant search + genre filters, add to your personal watchlist, dark and light mode with fully responsive design",
+    link: "https://am-adewale.github.io/Realwale/",
+    image: "moviereview.jpg",
+    technologies: ["HTML", "CSS", "JAVASCRIPT"]
+  },
+  {
+    id: 2,
+    title: "Food Ecommerce Website",
+    description: "OYESDELIGHT Food ordering website that allows users to browse menus, select meals, and place orders from oyesdelight a local resturant. This site is designed to provide seamless, user-friendly experiences that mimics ordering food in person but with convienience of doing it online.",
+    link: "https://am-adewale.github.io/oyesdelight/",
+    image: "2.jpg",
+    technologies: ["HTML5", "CSS3", "Javascript", "PHP, MSQL"]
+  },
+  {
+    id: 3,
+    title: "Product Review Card",
+    description: "Interactive product review component with rating system, image gallery, and responsive design. Features smooth animations and user-friendly interface.",
+    link: "#",
+    image: "product review card.jpg",
+    technologies: ["HTML", "CSSS",]
+  },
+  {
+    id: 4,
+    title: "Weather App",
+    description: "Real-time weather application with location detection, 5-day forecast, and interactive weather maps. Integrates with multiple weather APIs.",
+    link: "#",
+    image: "weather.jpg",
+    technologies: ["React", "html", "API Integration"]
+  }
+];
+
 // DOM Elements
 const themeToggle = document.getElementById('theme-switch');
 const body = document.body;
@@ -281,6 +317,140 @@ function handleHeaderScroll() {
     }
 }
 
+// Project Details Popup Functionality
+function showProjectDetails(projectId) {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+
+    // Create popup overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'project-popup-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+
+    // Create popup content
+    const popup = document.createElement('div');
+    popup.className = 'project-popup';
+    popup.style.cssText = `
+        background-color: var(--primary-bg);
+        padding: 2rem;
+        border-radius: 10px;
+        max-width: 800px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    `;
+
+    // Create close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'close-popup';
+    closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    closeBtn.style.cssText = `
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-color);
+    `;
+
+    // Popup content
+    popup.innerHTML = `
+        <div class="project-popup-content">
+            <div class="project-popup-image">
+                <img src="${project.image}" alt="${project.title}" style="width:100%; border-radius:8px; margin-bottom:1rem;">
+            </div>
+            <h3 style="margin-bottom:1rem; color:var(--accent-color);">${project.title}</h3>
+            <p style="margin-bottom:1.5rem; line-height:1.6;">${project.description}</p>
+            <div class="project-technologies" style="margin-bottom:1.5rem;">
+                <h4 style="margin-bottom:0.5rem;">Technologies Used:</h4>
+                <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                    ${project.technologies.map(tech => `<span style="background-color:var(--secondary-bg); padding:0.3rem 0.8rem; border-radius:20px; font-size:0.9rem;">${tech}</span>`).join('')}
+                </div>
+            </div>
+            <a href="${project.link}" target="_blank" class="project-link-btn" style="display:inline-block; background-color:var(--accent-color); color:white; padding:0.8rem 1.5rem; border-radius:5px; text-decoration:none; font-weight:bold; transition:background-color 0.3s;">
+                View Live Project <i class="fas fa-external-link-alt" style="margin-left:0.5rem;"></i>
+            </a>
+        </div>
+    `;
+
+    // Append close button
+    popup.appendChild(closeBtn);
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    // Animate in
+    setTimeout(() => {
+        overlay.style.opacity = '1';
+        popup.style.transform = 'scale(1)';
+    }, 10);
+
+    // Close functionality
+    function closePopup() {
+        overlay.style.opacity = '0';
+        popup.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            document.body.removeChild(overlay);
+            document.body.style.overflow = '';
+        }, 300);
+    }
+
+    closeBtn.addEventListener('click', closePopup);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closePopup();
+        }
+    });
+
+    // Close with ESC key
+    document.addEventListener('keydown', function escClose(e) {
+        if (e.key === 'Escape') {
+            closePopup();
+            document.removeEventListener('keydown', escClose);
+        }
+    });
+}
+
+// Initialize project cards with click handlers
+function initProjectCards() {
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    projectCards.forEach((card, index) => {
+        const button = card.querySelector('.view-details-btn');
+        
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Add click animation
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 150);
+            
+            // Show project details popup
+            showProjectDetails(index + 1); // +1 because project IDs start at 1
+        });
+    });
+}
+
 // Intersection Observer for animations
 function initScrollAnimations() {
     const observerOptions = {
@@ -320,28 +490,6 @@ function initScrollAnimations() {
         card.style.animationDelay = `${index * 0.1}s`;
         card.classList.add('animate-on-scroll');
         observer.observe(card);
-    });
-}
-
-// Project card interactions
-function initProjectCards() {
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    projectCards.forEach(card => {
-        const button = card.querySelector('.view-details-btn');
-        
-        button.addEventListener('click', () => {
-            // Add click animation
-            button.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                button.style.transform = 'scale(1)';
-            }, 150);
-            
-            // Here you could add logic to show project details
-            // For now, we'll just show an alert
-            const projectTitle = card.querySelector('h4').textContent;
-            showNotification(`Viewing details for: ${projectTitle}`);
-        });
     });
 }
 
@@ -394,12 +542,6 @@ function initFeaturedProjectEffects() {
     });
 }
 
-// Form validation for contact (if you add a contact form later)
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
 // Scroll progress indicator
 function createScrollProgress() {
     const progressBar = document.createElement('div');
@@ -425,63 +567,6 @@ function createScrollProgress() {
     window.addEventListener('scroll', updateProgress);
 }
 
-// Lazy loading for images
-function initLazyLoading() {
-    const images = document.querySelectorAll('img[src*="placeholder"]');
-    
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.style.opacity = '0';
-                img.style.transition = 'opacity 0.3s ease';
-                
-                setTimeout(() => {
-                    img.style.opacity = '1';
-                }, 100);
-                
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-    
-    images.forEach(img => imageObserver.observe(img));
-}
-
-// Keyboard navigation
-function initKeyboardNavigation() {
-    document.addEventListener('keydown', (e) => {
-        // ESC key to close mobile menu
-        if (e.key === 'Escape' && nav.classList.contains('active')) {
-            nav.classList.remove('active');
-            mobileMenuToggle.classList.remove('active');
-        }
-        
-        // Arrow keys for testimonial navigation
-        if (document.activeElement.closest('.testimonial-slider')) {
-            if (e.key === 'ArrowLeft') {
-                currentTestimonial = currentTestimonial > 0 ? currentTestimonial - 1 : testimonials.length - 1;
-                showTestimonial(currentTestimonial);
-            } else if (e.key === 'ArrowRight') {
-                nextTestimonial();
-            }
-        }
-    });
-}
-
-// Performance optimization: Debounce scroll events
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
 // Initialize all functionality
 function init() {
     // Initialize theme
@@ -503,8 +588,6 @@ function init() {
     initTechStackEffects();
     initServiceBoxEffects();
     initFeaturedProjectEffects();
-    initKeyboardNavigation();
-    initLazyLoading();
     
     // Create scroll progress indicator
     createScrollProgress();
@@ -513,6 +596,19 @@ function init() {
     window.addEventListener('load', () => {
         document.body.classList.add('loaded');
     });
+}
+
+// Debounce function for performance optimization
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
 
 // Wait for DOM to be fully loaded
@@ -538,11 +634,3 @@ window.addEventListener('error', (e) => {
         console.log('Image failed to load:', e.target.src);
     }
 });
-
-// Export functions for potential external use
-window.portfolioUtils = {
-    showTestimonial,
-    nextTestimonial,
-    validateEmail,
-    showNotification
-};
